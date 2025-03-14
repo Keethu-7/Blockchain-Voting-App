@@ -8,6 +8,9 @@ function App() {
   const [candidates, setCandidates] = useState([]);
   const [loading, setLoading] = useState(true);
   const [voted, setVoted] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [voterId, setVoterId] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     const initBlockchain = async () => {
@@ -30,6 +33,10 @@ function App() {
           return;
         }
         setContract(contractInstance);
+        window.contract = contractInstance;
+
+        const voter = await contractInstance.methods.voters(accounts[0]).call();
+        setIsRegistered(voter.registered);
 
         const candidatesCount = await contractInstance.methods.candidatesCount().call();
         let candidatesList = [];
@@ -50,14 +57,34 @@ function App() {
     initBlockchain();
   }, []);
 
+  const handleRegister = async () => {
+    if (!voterId || !password) {
+      alert("Please enter a Voter ID and Password.");
+      return;
+    }
+    try {
+      await contract.methods.registerAsVoter(voterId, password).send({ from: account });
+      alert("Successfully registered!");
+      setIsRegistered(true);
+    } catch (error) {
+      console.error("Registration failed:", error);
+      alert("Failed to register.");
+    }
+  };
+
   const handleVote = async (candidateId) => {
     if (!contract) {
       alert("Smart contract is not loaded!");
       return;
     }
-
+    const voterId = prompt("Enter your Voter ID:");
+    const password = prompt("Enter your Password:");
+    if (!voterId || !password) {
+      alert("Please enter your Voter ID and Password to vote.");
+      return;
+    }
     try {
-      await contract.methods.vote(candidateId).send({ from: account });
+      await contract.methods.vote(candidateId, voterId, password).send({ from: account });
       alert("Vote cast successfully!");
       setVoted(true);
     } catch (error) {
@@ -70,6 +97,14 @@ function App() {
     <div className="App">
       <h1>Blockchain E-Voting System</h1>
       <p><strong>Connected Account:</strong> {account || "Not connected"}</p>
+
+      {!isRegistered && (
+        <div>
+          <input type="text" placeholder="Voter ID" value={voterId} onChange={(e) => setVoterId(e.target.value)} />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button onClick={handleRegister}>Register as Voter</button>
+        </div>
+      )}
 
       {loading ? (
         <p>Loading candidates...</p>

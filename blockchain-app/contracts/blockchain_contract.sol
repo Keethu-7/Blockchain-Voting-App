@@ -14,6 +14,8 @@ contract blockchain_contract {
         bool registered;
         bool voted;
         uint vote;
+        uint voterId;
+        bytes32 passwordHash;  //securely store password as a hash
     }
 
     mapping(address => Voter) public voters;
@@ -21,7 +23,7 @@ contract blockchain_contract {
     uint public candidatesCount;
 
     event CandidateRegistered(uint id, string name);
-    event VoterRegistered(address voter);
+    event VoterRegistered(address voter, uint voterId);
     event VoteCast(address voter, uint candidateId);
     event VotingStarted();
     event VotingEnded();
@@ -52,22 +54,45 @@ contract blockchain_contract {
         emit CandidateRegistered(candidatesCount, _name);
     }
 
-    function registerVoter(address _voter) public onlyAdmin {
+   
+    function registerVoter(address _voter, uint _voterId, string memory _password) public onlyAdmin {
         require(!voters[_voter].registered, "Voter already registered.");
-        voters[_voter] = Voter(true, false, 0);
-        emit VoterRegistered(_voter);
+
+        //store password as a hash for security
+        bytes32 passwordHash = keccak256(abi.encodePacked(_password));
+
+        voters[_voter] = Voter(true, false, 0, _voterId, passwordHash);
+        emit VoterRegistered(_voter, _voterId);
     }
+     function registerAsVoter(uint _voterId, string memory _password) public {
+        require(!voters[msg.sender].registered, "Voter already registered.");
+        bytes32 passwordHash = keccak256(abi.encodePacked(_password));
+        voters[msg.sender] = Voter(true, false, 0, _voterId, passwordHash);
+        emit VoterRegistered(msg.sender, _voterId);
+    }
+    function authenticateVoter(uint _voterId, string memory _password) public view returns (bool) {
+        require(voters[msg.sender].registered, "You are not registered to vote.");
+        require(voters[msg.sender].voterId == _voterId, "Invalid voter ID.");
+        return voters[msg.sender].passwordHash == keccak256(abi.encodePacked(_password));
+    }
+
 
     function startVoting() public onlyAdmin {
         require(!votingActive, "Voting already started.");
         votingActive = true;
         emit VotingStarted();
     }
+    
 
-    function vote(uint _candidateId) public votingOpen {
+    function vote(uint _candidateId, uint _voterId, string memory _password) public votingOpen {
         require(voters[msg.sender].registered, "You are not registered to vote.");
         require(!voters[msg.sender].voted, "You have already voted.");
         require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID.");
+        require(voters[msg.sender].voterId == _voterId, "Incorrect Voter ID.");
+
+        //verify password
+        bytes32 passwordHash = keccak256(abi.encodePacked(_password));
+        require(voters[msg.sender].passwordHash == passwordHash, "Incorrect password!");
 
         voters[msg.sender].voted = true;
         voters[msg.sender].vote = _candidateId;
