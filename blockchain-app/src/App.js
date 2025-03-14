@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { web3, getContract } from "./utils/web3";
 import "./App.css";
+//import { Router } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./components/Home";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import Vote from "./components/VotingForm";
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -94,6 +100,16 @@ function App() {
   };
 
   return (
+
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />}/>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/vote" element={<Vote />} />
+      </Routes>
+    </Router>
+    /*
     <div className="App">
       <h1>Blockchain E-Voting System</h1>
       <p><strong>Connected Account:</strong> {account || "Not connected"}</p>
@@ -123,7 +139,7 @@ function App() {
           </ul>
         </div>
       )}
-    </div>
+    </div> */
   );
 }
 
