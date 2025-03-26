@@ -1,4 +1,4 @@
-/* General Styles */
+/* General Styles for App Page */
 body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
@@ -7,11 +7,10 @@ body {
   text-align: center;
 }
 
-/* Main App Container */
 .App {
   max-width: 600px;
   margin: 20px auto;
-  background: white;
+  background: rgb(177, 159, 159);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -24,49 +23,7 @@ h1 {
   margin-bottom: 10px;
 }
 
-/* Account Info */
-p {
-  font-size: 16px;
-  color: #666;
-}
 
-/* Candidate List */
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  background: #fff;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Vote Button */
-button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
 
 /* Responsive Design */
 @media (max-width: 600px) {

@@ -7,6 +7,8 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Vote from "./components/VotingForm";
+import AdminLogin from "./components/AdminLogin";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -107,6 +109,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/vote" element={<Vote />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
     /*

@@ -77,6 +77,7 @@ contract blockchain_contract {
     }
 
 
+
     function startVoting() public onlyAdmin {
         require(!votingActive, "Voting already started.");
         votingActive = true;
