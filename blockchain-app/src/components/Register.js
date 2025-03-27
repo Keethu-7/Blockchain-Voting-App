@@ -9,17 +9,19 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const calculateAge = (dob) => {
-    const birthDate = new Date(dob);
-    const today = new Date();
-    const age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      return age - 1;
-    }
-    return age;
+  // Function to extract birth year from full date
+  const getBirthYear = (dob) => {
+    return new Date(dob).getFullYear();
   };
 
+  // Function to calculate age
+  const calculateAge = (dob) => {
+    const birthYear = getBirthYear(dob);
+    const currentYear = new Date().getFullYear();
+    return currentYear - birthYear;
+  };
+
+  // Input Validation
   const validateInputs = () => {
     if (!dob) {
       alert("Please enter your date of birth.");
@@ -33,8 +35,8 @@ const Register = () => {
       alert("Enter a valid email (must contain .com).");
       return false;
     }
-    if (!/^\d{9}$/.test(mobile)) {
-      alert("Mobile number must be exactly 9 digits.");
+    if (!/^\d{10}$/.test(mobile)) { 
+      alert("Mobile number must be exactly 10 digits.");
       return false;
     }
     if (password.length < 8) {
@@ -44,18 +46,35 @@ const Register = () => {
     return true;
   };
 
+  // Handle Register Function
   const handleRegister = async () => {
-    if (!validateInputs()) return;
+    if (!validateInputs()) return; // Stop if validation fails
 
     try {
       const accounts = await web3.eth.getAccounts();
       const contract = await getContract();
-      await contract.methods.registerAsVoter(name, dob, email, mobile, username, password).send({ from: accounts[0] });
+
+      // Extract birth year from full date input
+      const birthYear = getBirthYear(dob);
+
+      console.log("Sending data to contract:", { 
+        name, 
+        birthYear,  // Send birth year as uint
+        email, 
+        mobile, 
+        username, 
+        password 
+      });
+
+      await contract.methods
+        .registerAsVoter(name, birthYear, email, mobile, username, password)
+        .send({ from: accounts[0] });
+
       alert("Successfully registered!");
       window.location.href = "/";
     } catch (error) {
       console.error("Registration failed:", error);
-      alert("Failed to register.");
+      alert(`Failed to register: ${error.message}`);
     }
   };
 
@@ -63,11 +82,19 @@ const Register = () => {
     <div>
       <h2>Register</h2>
       <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} />
-      <input type="date" placeholder="Date of Birth" onChange={(e) => setDob(e.target.value)} />
+      
+      {/* Date of Birth Input */}
+      <input 
+        type="date" 
+        placeholder="Date of Birth" 
+        onChange={(e) => setDob(e.target.value)} 
+      />
+
       <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
       <input type="text" placeholder="Mobile No." onChange={(e) => setMobile(e.target.value)} />
       <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
       <input type="password" placeholder="Password (min 8 characters)" onChange={(e) => setPassword(e.target.value)} />
+      
       <button onClick={handleRegister}>Register</button>
     </div>
   );
