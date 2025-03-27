@@ -14,16 +14,22 @@ contract blockchain_contract {
         bool registered;
         bool voted;
         uint vote;
-        uint voterId;
-        bytes32 passwordHash;  //securely store password as a hash
+        string name;
+        string dob;
+        string email;
+        string mobileNumber;
+        string username;
+        bytes32 passwordHash;
     }
 
     mapping(address => Voter) public voters;
     mapping(uint => Candidate) public candidates;
     uint public candidatesCount;
+    
+    address[] public voterAddresses; // Stores all registered voter addresses
 
     event CandidateRegistered(uint id, string name);
-    event VoterRegistered(address voter, uint voterId);
+    event VoterRegistered(address voter, string username);
     event VoteCast(address voter, uint candidateId);
     event VotingStarted();
     event VotingEnded();
@@ -54,46 +60,39 @@ contract blockchain_contract {
         emit CandidateRegistered(candidatesCount, _name);
     }
 
-   
-    function registerVoter(address _voter, uint _voterId, string memory _password) public onlyAdmin {
-        require(!voters[_voter].registered, "Voter already registered.");
-
-        //store password as a hash for security
-        bytes32 passwordHash = keccak256(abi.encodePacked(_password));
-
-        voters[_voter] = Voter(true, false, 0, _voterId, passwordHash);
-        emit VoterRegistered(_voter, _voterId);
-    }
-     function registerAsVoter(uint _voterId, string memory _password) public {
+    function registerAsVoter(
+        string memory _name,
+        string memory _dob,
+        string memory _email,
+        string memory _mobileNumber,
+        string memory _username,
+        string memory _password
+    ) public {
         require(!voters[msg.sender].registered, "Voter already registered.");
         bytes32 passwordHash = keccak256(abi.encodePacked(_password));
-        voters[msg.sender] = Voter(true, false, 0, _voterId, passwordHash);
-        emit VoterRegistered(msg.sender, _voterId);
+
+        voters[msg.sender] = Voter(true, false, 0, _name, _dob, _email, _mobileNumber, _username, passwordHash);
+        voterAddresses.push(msg.sender); // Store the voter's address
+
+        emit VoterRegistered(msg.sender, _username);
     }
-    function authenticateVoter(uint _voterId, string memory _password) public view returns (bool) {
+
+    function authenticateVoter(string memory _username, string memory _password) public view returns (bool) {
         require(voters[msg.sender].registered, "You are not registered to vote.");
-        require(voters[msg.sender].voterId == _voterId, "Invalid voter ID.");
+        require(keccak256(abi.encodePacked(voters[msg.sender].username)) == keccak256(abi.encodePacked(_username)), "Invalid username.");
         return voters[msg.sender].passwordHash == keccak256(abi.encodePacked(_password));
     }
-
-
 
     function startVoting() public onlyAdmin {
         require(!votingActive, "Voting already started.");
         votingActive = true;
         emit VotingStarted();
     }
-    
 
-    function vote(uint _candidateId, uint _voterId, string memory _password) public votingOpen {
+    function vote(uint _candidateId) public votingOpen {
         require(voters[msg.sender].registered, "You are not registered to vote.");
         require(!voters[msg.sender].voted, "You have already voted.");
         require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID.");
-        require(voters[msg.sender].voterId == _voterId, "Incorrect Voter ID.");
-
-        //verify password
-        bytes32 passwordHash = keccak256(abi.encodePacked(_password));
-        require(voters[msg.sender].passwordHash == passwordHash, "Incorrect password!");
 
         voters[msg.sender].voted = true;
         voters[msg.sender].vote = _candidateId;
@@ -116,5 +115,14 @@ contract blockchain_contract {
 
     function getVotingStatus() public view returns (bool) {
         return votingActive;
+    }
+
+    // ✅ **New Function**: Returns a list of registered voter usernames
+    function getRegisteredVoters() public view onlyAdmin returns (string[] memory) {
+        string[] memory usernames = new string[](voterAddresses.length);
+        for (uint i = 0; i < voterAddresses.length; i++) {
+            usernames[i] = voters[voterAddresses[i]].username;
+        }
+        return usernames;
     }
 }

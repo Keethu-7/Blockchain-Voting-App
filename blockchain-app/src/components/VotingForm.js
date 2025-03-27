@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { web3, getContract } from "../utils/web3";
 import { useLocation, useNavigate } from "react-router-dom";
 
+const accounts = await web3.eth.getAccounts();
+console.log("Connected MetaMask Account:", accounts[0]);
+
+
 const Vote = () => {
   const [isVotingActive, setIsVotingActive] = useState(false);
   const [candidates, setCandidates] = useState([]);
@@ -35,6 +39,7 @@ const Vote = () => {
         console.error("Error fetching voting status:", error);
       }
     };
+
 
     loadCandidates();
     fetchVotingStatus();

@@ -20,6 +20,7 @@ function App() {
   const [voterId, setVoterId] = useState("");
   const [password, setPassword] = useState("");
 
+  
   useEffect(() => {
     const initBlockchain = async () => {
       try {
@@ -27,14 +28,14 @@ function App() {
           alert("Web3 provider not found! Please install MetaMask.");
           return;
         }
-
+  
         const accounts = await web3.eth.getAccounts();
         if (accounts.length === 0) {
-          alert("No accounts found. Please unlock MetaMask.");
+          alert("No accounts found. Please unlock MetaMask and refresh.");
           return;
         }
         setAccount(accounts[0]);
-
+  
         const contractInstance = await getContract();
         if (!contractInstance) {
           alert("Contract not deployed on the current network!");
@@ -42,28 +43,15 @@ function App() {
         }
         setContract(contractInstance);
         window.contract = contractInstance;
-
-        const voter = await contractInstance.methods.voters(accounts[0]).call();
-        setIsRegistered(voter.registered);
-
-        const candidatesCount = await contractInstance.methods.candidatesCount().call();
-        let candidatesList = [];
-
-        for (let i = 1; i <= candidatesCount; i++) {
-          const candidate = await contractInstance.methods.getCandidate(i).call();
-          candidatesList.push({ id: i, name: candidate[0], votes: candidate[1] });
-        }
-
-        setCandidates(candidatesList);
-        setLoading(false);
       } catch (error) {
         console.error("Error loading blockchain data:", error);
         alert("Error connecting to blockchain. Check console for details.");
       }
     };
-
+  
     initBlockchain();
   }, []);
+  
 
   const handleRegister = async () => {
     if (!voterId || !password) {
