@@ -3,6 +3,7 @@ import { web3, getContract } from "./utils/web3";
 import "./App.css";
 //import { Router } from "react-router-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import About from "./components/About";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
@@ -96,6 +97,7 @@ function App() {
         <Route path="/" element={<Home />}/>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/about" element={<About/>}/>
         <Route path="/vote" element={<Vote />} />
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

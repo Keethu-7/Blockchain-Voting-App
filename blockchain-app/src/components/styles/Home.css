@@ -1,5 +1,10 @@
 /* Home Page Specific Styles */
 body {
+    background-image: url('../../../public/BG.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Full height of the viewport */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
