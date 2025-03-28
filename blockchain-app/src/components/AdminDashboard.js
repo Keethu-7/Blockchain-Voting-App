@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { web3, getContract } from "../utils/web3";
+import { Link } from "react-router-dom";
+import  './styles/AdminDashboard.css'
 
 const AdminDashboard = () => {
   const [contract, setContract] = useState(null);
@@ -72,6 +74,7 @@ const AdminDashboard = () => {
           <li key={index}>{voter}</li>
         ))}
       </ul>
+      <Link to="/" className="HomeButton">Back to Home</Link>
     </div>
   );
 };

@@ -1,0 +1,12 @@
+.HomeButton {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #97badf;
+    color: rgb(74, 69, 69);
+    text-decoration: none;
+    border-radius: 5px;
+}
+.HomeButton:hover {
+    background-color: #7ba6d4;
+}
