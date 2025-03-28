@@ -1,0 +1,84 @@
+/* Register.css */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #0d47a1;
+    padding: 0;
+ 
+  }
+  
+  
+  
+  .container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../../public/Registerpic.png"); /* Optional - Add background image if needed */
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: 400px;
+
+    width: 100%;
+  }
+  
+  .form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #0d47a1;
+    text-align: center;
+    font-size: 24px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input {
+    margin-bottom: 15px;
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 12px;
+    background-color: #0d47a1;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #1565c0;
+  }
+  
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack image and form vertically */
+        height: auto;
+      }
+    .container {
+      background-image: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .form-container {
+      width: 90%;
+      padding: 20px;
+    }
+}            

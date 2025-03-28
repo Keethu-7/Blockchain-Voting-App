@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { web3, getContract } from "../utils/web3";
+import "./styles/Register.css"; // Import the new CSS file
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -9,12 +10,10 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // Function to extract birth year from full date
-  const getBirthYear = (dob) => {
-    return new Date(dob).getFullYear();
-  };
+  // Extract birth year
+  const getBirthYear = (dob) => new Date(dob).getFullYear();
 
-  // Function to calculate age
+  // Calculate Age
   const calculateAge = (dob) => {
     const birthYear = getBirthYear(dob);
     const currentYear = new Date().getFullYear();
@@ -35,7 +34,7 @@ const Register = () => {
       alert("Enter a valid email (must contain .com).");
       return false;
     }
-    if (!/^\d{10}$/.test(mobile)) { 
+    if (!/^\d{10}$/.test(mobile)) {
       alert("Mobile number must be exactly 10 digits.");
       return false;
     }
@@ -46,24 +45,23 @@ const Register = () => {
     return true;
   };
 
-  // Handle Register Function
+  // Register User
   const handleRegister = async () => {
-    if (!validateInputs()) return; // Stop if validation fails
+    if (!validateInputs()) return;
 
     try {
       const accounts = await web3.eth.getAccounts();
       const contract = await getContract();
 
-      // Extract birth year from full date input
       const birthYear = getBirthYear(dob);
 
-      console.log("Sending data to contract:", { 
-        name, 
-        birthYear,  // Send birth year as uint
-        email, 
-        mobile, 
-        username, 
-        password 
+      console.log("Sending data to contract:", {
+        name,
+        birthYear,
+        email,
+        mobile,
+        username,
+        password,
       });
 
       await contract.methods
@@ -79,23 +77,46 @@ const Register = () => {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
-      <input type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} />
-      
-      {/* Date of Birth Input */}
-      <input 
-        type="date" 
-        placeholder="Date of Birth" 
-        onChange={(e) => setDob(e.target.value)} 
-      />
-
-      <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="text" placeholder="Mobile No." onChange={(e) => setMobile(e.target.value)} />
-      <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-      <input type="password" placeholder="Password (min 8 characters)" onChange={(e) => setPassword(e.target.value)} />
-      
-      <button onClick={handleRegister}>Register</button>
+    <div className="container">
+   
+      <div className="form-container">
+        <h2>Registration form</h2>
+        <form>
+          <input
+            type="text"
+            placeholder="Name"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="date"
+            placeholder="Date of Birth"
+            onChange={(e) => setDob(e.target.value)}
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Mobile No."
+            onChange={(e) => setMobile(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password (min 8 characters)"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="button" onClick={handleRegister}>
+            SUBMIT
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
