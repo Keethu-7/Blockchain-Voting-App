@@ -112,7 +112,7 @@ const Register = () => {
             placeholder="Password (min 8 characters)"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="button" onClick={handleRegister}>
+          <button type="button" class="register-button" onClick={handleRegister}>
             SUBMIT
           </button>
         </form>

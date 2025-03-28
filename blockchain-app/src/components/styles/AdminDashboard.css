@@ -1,3 +1,7 @@
+ul{
+    list-style: none;
+}
+
 .HomeButton {
     display: inline-block;
     margin-top: 20px;
