@@ -82,8 +82,16 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
-   
+    
+      <div className="container">
+    {/* Image Container */}
+    <div className="image-container">
+      <img
+        src={process.env.PUBLIC_URL + "/Registerpic.png"}
+        alt="Registration Illustration"
+        style={{ width: "400px", height: "auto" }}
+      />
+    </div>
       <div className="form-container">
         <h2>Registration form</h2>
         <form>
