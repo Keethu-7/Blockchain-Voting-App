@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { web3, getContract } from "../utils/web3";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import "./styles/PersonalInfo.css";
 
 const PersonalInfo = () => {
   const [voterInfo, setVoterInfo] = useState(null);
@@ -37,12 +39,25 @@ const PersonalInfo = () => {
 
   return (
     <div>
-      <h2>Personal Information</h2>
-      <p><strong>Name:</strong> {voterInfo.name}</p>
-      <p><strong>Birth Year:</strong> {voterInfo.birthYear}</p>
-      <p><strong>Email:</strong> {voterInfo.email}</p>
-      <p><strong>Mobile:</strong> {voterInfo.mobileNumber}</p>
-      <p><strong>Username:</strong> {voterInfo.username}</p>
+        <nav>
+            <Link to="/" >Home</Link>
+            <Link to="/vote" >Vote</Link>
+            <Link to="/personal-info" className="active" >Personal Info</Link>
+        </nav>
+        <div className="profile-card">
+        <div className="profile-image">
+          <img src="/profile.png" alt="Profile" />
+          <button className="change-pic-btn">Change profile picture</button>
+        </div>
+        <div  className="user-info">
+            <h2>Personal Information</h2>
+            <p><strong>Name:</strong> {voterInfo.name}</p>
+            <p><strong>Birth Year:</strong> {voterInfo.birthYear}</p>
+            <p><strong>Email:</strong> {voterInfo.email}</p>
+            <p className="mobilenum"><strong>Mobile:</strong> {voterInfo.mobileNumber}</p>
+            <p><strong>Username:</strong> {voterInfo.username}</p>
+        </div>
+    </div>
     </div>
   );
 };

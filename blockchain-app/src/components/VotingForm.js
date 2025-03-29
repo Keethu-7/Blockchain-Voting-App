@@ -82,7 +82,7 @@ const Vote = () => {
     <div>
        <nav>
         <Link to="/" >Home</Link>
-        <Link to="/vote">Vote</Link>
+        <Link to="/vote" className="active">Vote</Link>
         <Link to="/personal-info" >Personal Info</Link>
       </nav>
       <h2>Welcome, Voter {voterId}</h2>
