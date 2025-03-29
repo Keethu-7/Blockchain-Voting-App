@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { web3, getContract } from "../utils/web3";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify"; // ✅ Import toast
+import "react-toastify/dist/ReactToastify.css"; // ✅ Import Toastify CSS
 
 const accounts = await web3.eth.getAccounts();
 console.log("Connected MetaMask Account:", accounts[0]);
@@ -64,12 +66,15 @@ const Vote = () => {
         .vote(candidateId, voterId, password)
         .send({ from: accounts[0] });
 
-      alert("Vote cast successfully!");
       setVoted(true);
-      navigate("/");
+      toast.success("Your vote has been cast successfully!", {
+        onClose: () => navigate("/") // Redirect to home after toast
+      });
+      
     } catch (error) {
       console.error("Error voting:", error);
-      alert(`Failed to cast vote. Error: ${error.message || error}`);
+      toast.error("Failed to cast vote: You have already voted!!");
+      
     }
   };
 

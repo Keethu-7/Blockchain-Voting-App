@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { web3, getContract } from "./utils/web3";
 import "./App.css";
 //import { Router } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify"; // ✅ Import toast
+import "react-toastify/dist/ReactToastify.css"; // ✅ Import Toastify CSS
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./components/About";
 import Home from "./components/Home";
@@ -14,12 +16,12 @@ import AdminDashboard from "./components/AdminDashboard";
 function App() {
   const [account, setAccount] = useState(null);
   const [contract, setContract] = useState(null);
-  const [candidates, setCandidates] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [voted, setVoted] = useState(false);
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [voterId, setVoterId] = useState("");
-  const [password, setPassword] = useState("");
+ // const [candidates, setCandidates] = useState([]);
+  //const [loading, setLoading] = useState(true);
+  const [setVoted] = useState(false);
+  const [setIsRegistered] = useState(false);
+  const [voterId] = useState("");
+  const [password] = useState("");
 
   
   useEffect(() => {
@@ -91,7 +93,8 @@ function App() {
   };
 
   return (
-
+    <div>
+    <ToastContainer />
     <Router>
       <Routes>
         <Route path="/" element={<Home />}/>
@@ -103,6 +106,7 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
+    </div>
     /*
     <div className="App">
       <h1>Blockchain E-Voting System</h1>

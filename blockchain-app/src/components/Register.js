@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { web3, getContract } from "../utils/web3";
 import "./styles/Register.css"; // Import the new CSS file
+import { toast } from "react-toastify"; // ✅ Import toast
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -69,10 +72,12 @@ const Register = () => {
         .send({ from: accounts[0] });
 
       alert("Successfully registered!");
+      toast.success("Registration successful! 🎉");
       window.location.href = "/";
     } catch (error) {
       console.error("Registration failed:", error);
       alert(`Failed to register: ${error.message}`);
+      toast.error("Registration failed. Try again.");
     }
   };
 
