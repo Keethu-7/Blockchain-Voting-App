@@ -14,23 +14,27 @@ const PersonalInfo = () => {
       try {
         const contract = await getContract();
         const accounts = await web3.eth.getAccounts();
+        console.log("Current Account:", accounts[0]); // 🔍 Debug log
+  
         const voterData = await contract.methods.voters(accounts[0]).call();
-
+        console.log("Fetched Voter Data:", voterData); // 🔍 Debug log
+  
         if (!voterData.registered) {
           toast.error("No voter information found.");
           navigate("/");
           return;
         }
-
+  
         setVoterInfo(voterData);
       } catch (error) {
         console.error("Error fetching voter information:", error);
         toast.error("Failed to load personal info.");
       }
     };
-
+  
     fetchVoterInfo();
   }, [navigate]);
+  
 
   if (!voterInfo) {
     return <p>Loading...</p>;

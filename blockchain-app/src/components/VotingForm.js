@@ -49,33 +49,43 @@ const Vote = () => {
     try {
       const accounts = await web3.eth.getAccounts();
       const contract = await getContract();
-      
-      if (!candidateId) {
-        toast.error("Invalid candidate selection!");
+      const voterAddress = accounts[0];
+  
+      // 🔍 Debug: Fetch voter data
+      const voterData = await contract.methods.voters(voterAddress).call();
+      console.log("Voter Data:", voterData);
+  
+      if (!voterData.registered) {
+        toast.error("You are not registered to vote!");
         return;
       }
-
-      console.log("Voting with Candidate ID:", candidateId);
-      
-      await contract.methods
-        .vote(candidateId) // ✅ No voterId or password needed
-        .send({ from: accounts[0] });
-
-      setVoted(true);
-      toast.success("Your vote has been cast successfully!", {
-        onClose: () => navigate("/") 
+  
+      if (voterData.hasVoted) {
+        toast.error("You have already voted!");
+        return;
+      }
+  
+      console.log(`Voting for Candidate ID: ${candidateId}`);
+  
+      // ✅ Send transaction
+      await contract.methods.vote(candidateId).send({ 
+        from: voterAddress, 
+        gas: 300000 
       });
-
+  
+      toast.success("Your vote has been cast successfully!", {
+        onClose: () => navigate("/")
+      });
+  
     } catch (error) {
       console.error("Error voting:", error);
-
-      if (error.message.includes("You have already voted")) {
-        toast.error("You have already voted!"); 
-      } else {
-        toast.error("Failed to cast vote. Please try again.");
-      }
+      toast.error("Error: " + error.message);
     }
   };
+  
+  
+  
+  
 
   return (
     <div>
