@@ -12,6 +12,7 @@ import Login from "./components/Login";
 import Vote from "./components/VotingForm";
 import AdminLogin from "./components/AdminLogin";
 import AdminDashboard from "./components/AdminDashboard";
+import PersonalInfo from "./components/PersonalInfo";
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -103,6 +104,7 @@ function App() {
         <Route path="/about" element={<About/>}/>
         <Route path="/vote" element={<Vote />} />
         <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/personal-info" element={<PersonalInfo />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>

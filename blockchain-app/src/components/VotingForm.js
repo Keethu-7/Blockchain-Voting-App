@@ -3,7 +3,7 @@ import { web3, getContract } from "../utils/web3";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify"; // ✅ Import toast
 import "react-toastify/dist/ReactToastify.css"; // ✅ Import Toastify CSS
-
+import { Link } from "react-router-dom";
 const accounts = await web3.eth.getAccounts();
 console.log("Connected MetaMask Account:", accounts[0]);
 
@@ -80,6 +80,11 @@ const Vote = () => {
 
   return (
     <div>
+       <nav>
+        <Link to="/" >Home</Link>
+        <Link to="/vote">Vote</Link>
+        <Link to="/personal-info" >Personal Info</Link>
+      </nav>
       <h2>Welcome, Voter {voterId}</h2>
       <h3>Voting Status: {isVotingActive ? "Active 🟢" : "Inactive 🔴"}</h3>
       
