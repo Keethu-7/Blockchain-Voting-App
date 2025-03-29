@@ -33,19 +33,35 @@ button:not(:disabled):hover {
     color: white;
 }
 
-.voter-table {
+/* Table Styling */
+.voter-table, .results-table {
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
+    background-color: white; /* ✅ Ensure table background is white */
+    color: black; /* ✅ Set text color to black */
 }
 
-.voter-table th, .voter-table td {
+.voter-table th, .voter-table td, 
+.results-table th, .results-table td {
     padding: 10px;
     border: 1px solid #ccc;
     text-align: left;
 }
 
-.home-button{
+.results-table th {
+    background-color: #e0e0e0; /* ✅ Light grey background for headers */
+    color: black; /* ✅ Ensure header text is black */
+    font-weight: bold;
+}
+
+.voter-table th {
+    background-color: #e0e0e0; /* ✅ Light grey background for headers */
+    color: black; /* ✅ Ensure header text is black */
+    font-weight: bold;
+}
+
+.home-button {
     display: inline-block;
     margin-top: 20px;
     padding: 10px 20px;
@@ -54,6 +70,7 @@ button:not(:disabled):hover {
     text-decoration: none;
     border-radius: 5px;
 }
+
 .home-button:hover {
     background-color: #6b9cd1;
 }

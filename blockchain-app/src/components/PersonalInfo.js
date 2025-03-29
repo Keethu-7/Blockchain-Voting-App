@@ -11,7 +11,6 @@ const PersonalInfo = () => {
 
   useEffect(() => {
     const fetchVoterInfo = async () => {
-      const voterId = localStorage.getItem("voterId");
       try {
         const contract = await getContract();
         const accounts = await web3.eth.getAccounts();
