@@ -8,20 +8,22 @@ contract blockchain_contract {
     struct Candidate {
         string name;
         uint voteCount;
+        uint birthYear;  // Add birthYear to calculate age
+        string party;    // Add party
+        string education; // Add education
     }
 
     struct Voter {
-    bool registered;
-    bool voted;
-    uint vote;
-    string name;
-    uint birthYear; // Change from string to uint
-    string email;
-    string mobileNumber;
-    string username;
-    bytes32 passwordHash;
-}
-
+        bool registered;
+        bool voted;
+        uint vote;
+        string name;
+        uint birthYear; // Change from string to uint
+        string email;
+        string mobileNumber;
+        string username;
+        bytes32 passwordHash;
+    }
 
     mapping(address => Voter) public voters;
     mapping(uint => Candidate) public candidates;
@@ -49,53 +51,49 @@ contract blockchain_contract {
         admin = msg.sender;
         votingActive = false;
 
-        // Pre-registering sample candidates
-        addInitialCandidate("Alice");
-        addInitialCandidate("Bob");
-        addInitialCandidate("Charlie");
+        // Pre-registering sample candidates with party and education information
+        addInitialCandidate("Alice", 1990, "Democratic Party", "PhD in Computer Science");
+        addInitialCandidate("Bob", 1985, "Republican Party", "MBA in Business Administration");
+        addInitialCandidate("Charlie", 1992, "Independent", "Masters in Education");
     }
 
-    function addInitialCandidate(string memory _name) internal {
+    function addInitialCandidate(
+        string memory _name, 
+        uint _birthYear, 
+        string memory _party, 
+        string memory _education
+    ) internal {
         candidatesCount++;
-        candidates[candidatesCount] = Candidate(_name, 0);
+        candidates[candidatesCount] = Candidate(_name, 0, _birthYear, _party, _education);
         emit CandidateRegistered(candidatesCount, _name);
     }
 
-    function calculateAge(string memory _dob) internal view returns (uint) {
-        // Example: If _dob = "2000-01-01", parse it into year
-        bytes memory dobBytes = bytes(_dob);
-        require(dobBytes.length == 10, "Invalid DOB format, use YYYY-MM-DD");
-
-        uint year = uint8(dobBytes[0]) * 1000 + uint8(dobBytes[1]) * 100 + uint8(dobBytes[2]) * 10 + uint8(dobBytes[3]);
+    function calculateAge(uint _birthYear) internal view returns (uint) {
         uint currentYear = block.timestamp / 60 / 60 / 24 / 365 + 1970; // Approximate year from timestamp
-
-        return currentYear - year;
+        return currentYear - _birthYear;
     }
 
     function registerAsVoter(
-    string memory _name,
-    uint _birthYear, // Change type from string to uint
-    string memory _email,
-    string memory _mobileNumber,
-    string memory _username,
-    string memory _password
-) public {
-    require(!voters[msg.sender].registered, "Voter already registered.");
-    require((block.timestamp / 60 / 60 / 24 / 365 + 1970) - _birthYear >= 18, "You must be at least 18 years old to register."); // Age check
+        string memory _name,
+        uint _birthYear,
+        string memory _email,
+        string memory _mobileNumber,
+        string memory _username,
+        string memory _password
+    ) public {
+        require(!voters[msg.sender].registered, "Voter already registered.");
+        require((block.timestamp / 60 / 60 / 24 / 365 + 1970) - _birthYear >= 18, "You must be at least 18 years old to register."); // Age check
 
-    require(bytes(_email).length > 5 && bytes(_email)[bytes(_email).length - 4] == '.', "Invalid email format (must end in .com)");
-    require(bytes(_mobileNumber).length == 10, "Mobile number must be exactly 10 digits.");
+        require(bytes(_email).length > 5 && bytes(_email)[bytes(_email).length - 4] == '.', "Invalid email format (must end in .com)");
+        require(bytes(_mobileNumber).length == 10, "Mobile number must be exactly 10 digits.");
 
-    bytes32 passwordHash = keccak256(abi.encodePacked(_password));
+        bytes32 passwordHash = keccak256(abi.encodePacked(_password));
 
-    voters[msg.sender] = Voter(true, false, 0, _name, _birthYear, _email, _mobileNumber, _username, passwordHash);
-    voterAddresses.push(msg.sender); // Store the voter's address
+        voters[msg.sender] = Voter(true, false, 0, _name, _birthYear, _email, _mobileNumber, _username, passwordHash);
+        voterAddresses.push(msg.sender); // Store the voter's address
 
-    emit VoterRegistered(msg.sender, _username);
-}
-
-
-
+        emit VoterRegistered(msg.sender, _username);
+    }
 
     function authenticateVoter(string memory _username, string memory _password) public view returns (bool) {
         require(voters[msg.sender].registered, "You are not registered to vote.");
@@ -127,10 +125,11 @@ contract blockchain_contract {
         emit VotingEnded();
     }
 
-    function getCandidate(uint _candidateId) public view returns (string memory, uint) {
+    function getCandidate(uint _candidateId) public view returns (string memory, uint, uint, string memory, string memory) {
         require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID.");
         Candidate memory candidate = candidates[_candidateId];
-        return (candidate.name, candidate.voteCount);
+        uint age = calculateAge(candidate.birthYear);
+        return (candidate.name, candidate.voteCount, age, candidate.party, candidate.education);
     }
 
     function getVotingStatus() public view returns (bool) {

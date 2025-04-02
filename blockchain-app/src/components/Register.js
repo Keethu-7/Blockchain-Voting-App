@@ -3,9 +3,11 @@ import { web3, getContract } from "../utils/web3";
 import "./styles/Register.css"; // Import the new CSS file
 import { toast } from "react-toastify"; // ✅ Import toast
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";  // Add the hook at the top
 
 
 const Register = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
   const [email, setEmail] = useState("");
@@ -51,33 +53,41 @@ const Register = () => {
   // Register User
   const handleRegister = async () => {
     if (!validateInputs()) return;
-
+  
     try {
       const accounts = await web3.eth.getAccounts();
       const contract = await getContract();
 
+      if (!accounts || accounts.length === 0) {
+        toast.error("No accounts found. Please unlock your MetaMask.");
+        return;
+      }
+  
       const birthYear = getBirthYear(dob);
-
+  
+      // Hash password before sending (you can use Web3.js's keccak256 or another hashing method)
+      const passwordHash = web3.utils.keccak256(password);
+  
       console.log("Sending data to contract:", {
         name,
         birthYear,
         email,
         mobile,
         username,
-        password,
+        passwordHash,  // Send hashed password
       });
-
+  
+      // Send registration data to contract
       await contract.methods
-        .registerAsVoter(name, birthYear, email, mobile, username, password)
+        .registerAsVoter(name, birthYear, email, mobile, username, passwordHash)
         .send({ from: accounts[0] });
-
-      alert("Successfully registered!");
+  
       toast.success("Registration successful! 🎉");
-      window.location.href = "/";
+      navigate("/");  // Navigate to home page instead of reloading
+  
     } catch (error) {
       console.error("Registration failed:", error);
-      alert(`Failed to register: ${error.message}`);
-      toast.error("Registration failed. Try again.");
+      toast.error(`Registration failed: ${error.message}`);
     }
   };
 

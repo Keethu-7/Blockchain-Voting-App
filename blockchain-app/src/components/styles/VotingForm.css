@@ -1,0 +1,176 @@
+/* Voting Page Container */
+.voting-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+  background: #01357a; /* Dark blue background */
+  border-radius: 10px;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* Make "Welcome, Voter" text white */
+.voting-container h2 {
+  color: white;
+}
+
+/* Navigation Bar */
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  background: transparent;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.nav-bar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-bar a:hover {
+  text-decoration: underline;
+}
+
+/* Candidate Selection */
+.candidate-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+  transition: transform 0.2s ease-in-out, background 0.3s;
+}
+
+/* Add border and background color to selected candidate */
+.candidate-card.selected {
+  background: #cce5ff; /* Light blue background for selected candidate */
+  color: black;
+  border: 2px solid blue;
+}
+
+/* Candidate Name & Party */
+.candidate-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  flex-grow: 1;
+  text-align: left;
+}
+
+
+/* Candidate Radio Button */
+.candidate-header input[type="radio"] {
+  accent-color: blue;
+  transform: scale(1.2);
+  margin-right: 0px;
+  cursor: pointer;
+}
+
+.candidate-header label {
+  display: inline-block;
+  width: 200px; /* Ensures uniform width for names */
+}
+
+.candidate-header #candidate-1{
+  border-right: 5px;
+  text-align: left;
+  flex-grow: 1;
+
+}
+.candidate-header #candidate-2{
+  border-right: 5px;
+  text-align: left;
+  flex-grow: 1;
+  margin-left: 45px;
+
+}
+.candidate-header #candidate-3{
+  text-align: left;
+  flex-grow: 1;
+  margin-right: -20px;
+
+}
+.candidate-header input[type="radio"] {
+  transform: scale(1); /* Increase size */
+  accent-color: blue; /* Custom color */
+  cursor: pointer;
+  margin-right: 10px; /* Space between radio button and name */
+}
+
+
+/* Candidate Image Positioned on Right Side */
+.candidate-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid white;
+  order: 2;
+}
+
+/* Candidate Details Box */
+.candidate-info {
+  text-align: left;
+  background: white;
+  padding: 5px;
+  margin-left: 10px;
+  border-radius: 5px;
+  color: black;
+  flex-grow: 1;
+}
+
+/* Confirmation Section */
+.confirmation-section {
+  margin-top: 20px;
+  background: rgba(1, 53, 122, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  color: rgb(243, 236, 236);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centers both checkbox and text */
+  /* Adds space between checkbox and text */
+  white-space: nowrap;
+}
+
+/* Checkbox Styling */
+.confirmation-section input[type="checkbox"] {
+  transform: scale(1.2); /* Makes checkbox slightly larger */
+  cursor: pointer;
+  margin-top: 13px;
+  margin-right: -380px;
+}
+
+/* Submit Button */
+.submit-button {
+  padding: 12px 25px;
+  background: #0051ff; /* Brighter blue */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.submit-button:hover {
+  background: #003bb3;
+}
+
+.submit-button:disabled {
+  background: gray;
+  cursor: not-allowed;
+}

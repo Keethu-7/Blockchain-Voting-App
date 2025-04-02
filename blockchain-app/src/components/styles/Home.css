@@ -31,12 +31,12 @@ nav a {
   text-decoration: none;
   font-weight: bold;
 }
-  h2{
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 2.5rem;
-    margin-top: 50px;
-    color: rgba(132, 112, 112, 0.758);
-  }
+h2{
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 2.5rem;
+  margin-top: 50px;
+  color: rgba(134, 174, 197, 0.758)
+}
   
   h1 {
     color: azure;

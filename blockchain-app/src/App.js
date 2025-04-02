@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { web3, getContract } from "./utils/web3";
 import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./components/About";
 import Home from "./components/Home";
@@ -12,6 +12,7 @@ import Vote from "./components/VotingForm";
 import AdminLogin from "./components/AdminLogin";
 import AdminDashboard from "./components/AdminDashboard";
 import PersonalInfo from "./components/PersonalInfo";
+import ResultsPage from "./components/ResultsPage";
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -95,6 +96,7 @@ function App() {
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/personal-info" element={<PersonalInfo />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/results" element={<ResultsPage />} />
         </Routes>
       </Router>
     </div>

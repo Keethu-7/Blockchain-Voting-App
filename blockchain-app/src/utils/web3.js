@@ -1,7 +1,6 @@
 import Web3 from "web3";
 import blockchainContract from "../contracts/blockchain_contract.json";
 
-
 console.log("Imported blockchainContract:", blockchainContract);
 
 
